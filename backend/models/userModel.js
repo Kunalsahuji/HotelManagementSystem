@@ -23,11 +23,15 @@ const userSchema = new mongoose.Schema({
         minlength: 4,
         select: false
     },
-    role: {
-        type:
-            String,
-        enum: ["guest", "host", "admin"],
-        default: "guest"
+    // role: {
+    //     type:
+    //         String,
+    //     enum: ["guest", "host", "admin"],
+    //     default: "guest"
+    // },
+    isAdmin: {
+        type: Boolean,
+        default: false,
     },
     properties: {
         type: mongoose.Schema.Types.ObjectId,
@@ -46,31 +50,33 @@ const userSchema = new mongoose.Schema({
 
 
 // Hash Password Before Saving
-userSchema.pre("save", async (next) => {
-    if (!this.isModified("password")) return next()
-
+userSchema.pre("save", function () {
+    if (!this.isModified("password")) {
+        return;
+    }
     try {
-        const salt = await bcrypt.genSalt(10)
-        this.password = await bcrypt.hash(this.password, salt)
-        next()
+        let salt = bcrypt.genSaltSync(10)
+        this.password = bcrypt.hashSync(this.password, salt)
     } catch (error) {
+        console.log(error)
         next(error)
     }
 })
-
 // Method to Compare Password
-userSchema.methods.comparePassword = async (enteredPassword) => {
-    return bcrypt.compare(enteredPassword, this.password)
+userSchema.methods.comparePassword = function (password) {
+    return bcrypt.compareSync(password, this.password)
 }
 
+
 // Generate Token
-userSchema.methods.getJWTToken = () => {
+userSchema.methods.getJWTToken = function () {
     return jwt.sign(
         { id: this._id },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: '30d' }
+        { expiresIn: process.env.JWT_EXPIRE }
     )
 }
+
 
 const User = mongoose.model("User", userSchema)
 module.exports = User
