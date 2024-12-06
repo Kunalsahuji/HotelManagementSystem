@@ -5,7 +5,9 @@ const {
     userRegister,
     currentUser,
     userLogin,
-    userLogout
+    userLogout,
+    updateUser,
+    resetPassword
 } = require('../controllers/userController');
 const router = express.Router()
 
@@ -13,7 +15,7 @@ const router = express.Router()
 router.get('/', authMiddleware, homePage)
 
 // current-user
-router.get('/current-user',authMiddleware, currentUser)
+router.get('/current-user', authMiddleware, currentUser)
 
 // user-register
 router.post('/user-register', userRegister)
@@ -21,8 +23,12 @@ router.post('/user-register', userRegister)
 // user-login
 router.post('/user-login', userLogin)
 
+// user-update
+router.put('/user-update', authMiddleware, updateUser)
 // user-logout
-router.get('/user-logout', userLogout)
+router.get('/user-logout', authMiddleware, userLogout)
+// user-reset-password-link
+router.post('user-reset-password', authMiddleware, resetPassword)
 
 
 
