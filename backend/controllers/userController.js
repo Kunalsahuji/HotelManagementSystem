@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const { sendToken } = require("../utils/sendToken");
 const bcrypt = require("bcrypt")
 const nodemailer = require('nodemailer');
+require('dotenv').config()
 // homepage
 module.exports.homePage = catchAsyncErrors(async (req, res, next) => {
     res.json({ message: "Secure homepage" })
@@ -97,13 +98,15 @@ module.exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
         const transport = nodemailer.createTransport({
             service: "gmail",
+            host: "smtp.gmail.com",
+            port: 465,
             auth: {
-                user: process.env.MAIL_ID,
+                user: process.env.EMAIL_ID,
                 pass: process.env.PASS
             },
         })
         const mailOption = {
-            from: process.env.EMAIL_ID,
+            from: process.env.ADDRESS,
             to: email,
             subject: `Password Reset Request`,
             text: `Click on the link to reset your password ${resetLink}`

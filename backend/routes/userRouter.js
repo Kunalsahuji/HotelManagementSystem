@@ -28,7 +28,7 @@ router.put('/user-update', authMiddleware, updateUser)
 // user-logout
 router.get('/user-logout', authMiddleware, userLogout)
 // user-reset-password-link
-router.post('user-reset-password', authMiddleware, resetPassword)
+router.post('/user-reset-password', authMiddleware, resetPassword)
 
 
 
