@@ -11,12 +11,14 @@ exports.adminMiddleware = catchAsyncErrors(async (req, res, next) => {
 
     // if (!token) return res.status(401).json({ message: "Unauthorized" });
 
-    const { id } = jwt.verify(token, process.env.JWT_SECRET_KEY)
-    req.id = id
-    // const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
-    // const user = await User.findById(decoded.id)
+    // const { id } = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    // req.id = id
 
-    if (!req.id || !req.user?.isAdmin) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    const user = await User.findById(decoded.id)
+    req.user = user
+
+    if (!req.user || !req.user?.isAdmin) {
         return next(new ErrorHandler("Access denied : Only Admin can Access", 401))
     }
     // if (!req.user || !req.user?.isAdmin) return res.status(401).json({ message: "Access denied: Admin only" });

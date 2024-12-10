@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config();
 const app = express()
 const ErrorHandler = require('./utils/ErrorHandler');
 const userRouter = require('./routes/userRouter')
+const propertyRouter = require('./routes/propertyRouter')
 // logger
 const logger = require('morgan')
 app.use(logger('tiny'))
@@ -27,6 +28,7 @@ app.use(cookieParser())
 
 // routes
 app.use('/api/user', userRouter)
+app.use('/api/property', propertyRouter)
 
 // error handling
 app.all('*', (req, res, next) => {

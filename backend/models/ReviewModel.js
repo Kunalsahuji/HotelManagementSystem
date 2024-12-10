@@ -3,23 +3,23 @@ const mongoose = require("mongoose");
 const reviewSchema = new mongoose.Schema({
     property: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Property", 
+        ref: "Property",
         required: true,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User", 
+        ref: "User",
         required: true,
     },
     rating: {
         type: Number,
-        min: 1, 
-        max: 5, 
+        min: 1,
+        max: 5,
         required: true,
     },
     comment: {
         type: String,
-        maxlength: 500, 
+        maxlength: 500,
     },
     createdAt: {
         type: Date,
@@ -31,9 +31,10 @@ const reviewSchema = new mongoose.Schema({
     },
 });
 
-reviewSchema.pre("save", function (next) {
-    this.updatedAt = Date.now(); 
-    next();
-});
+// reviewSchema.pre("save", function (next) {
+//     this.updatedAt = Date.now(); 
+//     next();
+// });
 
 const Review = mongoose.model("Review", reviewSchema);
+module.exports = Review

@@ -33,18 +33,18 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    properties: {
+    properties: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Property"
-    },
-    bookings: {
+    }],
+    bookings: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Booking"
-    },
-    reviews: {
+    }],
+    reviews: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Reviews"
-    },
+    }],
 
 }, { timestamps: true })
 

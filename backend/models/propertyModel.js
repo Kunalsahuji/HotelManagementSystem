@@ -21,24 +21,28 @@ const PropertySchema = new mongoose.Schema({
     images: {
         type: [String],
     },
+    amenities: {
+        type: [String],
+        default: []
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
+    // createdAt: {
+    //     type: Date,
+    //     default: Date.now,
+    // },
+    // updatedAt: {
+    //     type: Date,
+    //     default: Date.now,
+    // },
 }, { timestamps: true })
 
-PropertySchema.pre("save", function (next) {
-    this.updatedAt = Date.now();
-    next();
-});
+// PropertySchema.pre("save", function (next) {
+//     this.updatedAt = Date.now();
+//     next();
+// });
 const Property = mongoose.model("Property", PropertySchema)
 module.exports = Property

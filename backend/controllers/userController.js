@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const { sendToken } = require("../utils/sendToken");
 const bcrypt = require("bcrypt")
 const nodemailer = require('nodemailer');
+const Property = require("../models/propertyModel");
 require('dotenv').config()
 // homepage
 module.exports.homePage = catchAsyncErrors(async (req, res, next) => {
@@ -22,7 +23,9 @@ module.exports.userRegister = catchAsyncErrors(async (req, res, next) => {
     // if (userExists) {
     //     next(new ErrorHandler("User Already Register with this email address!", 409))
     // }
-    const user = await new User(req.body).save()
+    const { username, email, password } = req.body
+    const user = await User.create({ username, email, password})
+    await user.save()
     sendToken(user, 200, res)
 })
 // user-login
@@ -111,7 +114,9 @@ module.exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
             subject: `Password Reset Request`,
             text: `Click on the link to reset your password ${resetLink}`
         }
+
         await transport.sendMail(mailOption)
+        await user.save()
         res.json({ message: "Password reset link sent to your email" })
     } catch (error) {
         console.log(error)
