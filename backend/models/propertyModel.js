@@ -30,14 +30,6 @@ const PropertySchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    // createdAt: {
-    //     type: Date,
-    //     default: Date.now,
-    // },
-    // updatedAt: {
-    //     type: Date,
-    //     default: Date.now,
-    // },
 }, { timestamps: true })
 
 // PropertySchema.pre("save", function (next) {
