@@ -4,6 +4,7 @@ const app = express()
 const ErrorHandler = require('./utils/ErrorHandler');
 const userRouter = require('./routes/userRouter')
 const propertyRouter = require('./routes/propertyRouter')
+const reviewRouter = require('./routes/reviewRouter')
 // logger
 const logger = require('morgan')
 app.use(logger('tiny'))
@@ -29,6 +30,7 @@ app.use(cookieParser())
 // routes
 app.use('/api/user', userRouter)
 app.use('/api/property', propertyRouter)
+app.use('/api/review', reviewRouter)
 
 // error handling
 app.all('*', (req, res, next) => {
