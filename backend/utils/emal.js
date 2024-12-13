@@ -11,7 +11,7 @@ const transport = nodemailer.createTransport({
     }
 })
 
-exports.sendEmail = (to, subject, htmlContent) => {
+module.exports.sendEmail = (to, subject, htmlContent) => {
     const mailOption = {
         from: EMAIL_ID,
         to,

@@ -1,8 +1,5 @@
-const jwt = require("jsonwebtoken");
 const { catchAsyncErrors } = require("../middleware/catchAsyncErrors");
-const User = require("../models/userModel");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { sendToken } = require("../utils/sendToken");
 const Property = require("../models/propertyModel");
 
 module.exports.createProperty = catchAsyncErrors(async (req, res, next) => {
@@ -22,7 +19,7 @@ module.exports.createProperty = catchAsyncErrors(async (req, res, next) => {
         const newProperty = new Property({
             title, description, location, price, amenities, images, owner: req.user._id
         })
-        await req.user.properties.push(newProperty)
+        await req.user.properties.push(newProperty._id)
         await newProperty.save()
         await req.user.save()
 

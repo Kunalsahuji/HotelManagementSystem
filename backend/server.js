@@ -5,6 +5,7 @@ const ErrorHandler = require('./utils/ErrorHandler');
 const userRouter = require('./routes/userRouter')
 const propertyRouter = require('./routes/propertyRouter')
 const reviewRouter = require('./routes/reviewRouter')
+const bookingRouter = require('./routes/bookingRouter')
 // logger
 const logger = require('morgan')
 app.use(logger('tiny'))
@@ -27,10 +28,11 @@ app.use(session({
 const cookieParser = require('cookie-parser');
 app.use(cookieParser())
 
-// routes
+// routes 
 app.use('/api/user', userRouter)
 app.use('/api/property', propertyRouter)
 app.use('/api/review', reviewRouter)
+app.use('/api/booking', bookingRouter)
 
 // error handling
 app.all('*', (req, res, next) => {

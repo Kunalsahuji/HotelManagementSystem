@@ -1,4 +1,4 @@
-exports.bookingConfrimationTemplate = (
+module.exports.bookingConfrimationTemplate = (
     userName,
     propertyDetails,
     checkInDate,
@@ -18,7 +18,27 @@ exports.bookingConfrimationTemplate = (
     `;
 }
 
-exports.paymentConfirmationTemplate = (
+module.exports.bookingCancellationTemplate = (
+    userName,
+    propertyDetails,
+    checkInDate,
+    checkOutDate
+) => {
+    return `
+    <h2>Hello ${userName},</h2>
+    <p>Your Booking Has Been Cencelled!</p>
+    <h3>Booking Cancellation Details:</h3>
+    <ul>
+        <li><strong>Property:</strong> ${propertyDetails}</li>
+        <li><strong>Check-in:</strong> ${checkInDate}</li>
+        <li><strong>Check-out:</strong> ${checkOutDate}</li>
+    </ul>
+    <p>If you have any questions, feel free to reach out to our support team.</p>
+    <p>We hope you have a great stay!</p>
+    `;
+}
+
+module.exports.paymentConfirmationTemplate = (
     userName,
     propertyDetails,
     amount

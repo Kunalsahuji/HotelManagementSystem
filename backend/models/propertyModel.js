@@ -30,11 +30,15 @@ const PropertySchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    reviews: {
+    reviews: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Review",
-        required: true,
-    },
+    }],
+    bookings: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+    }],
+
 }, { timestamps: true })
 
 // PropertySchema.pre("save", function (next) {

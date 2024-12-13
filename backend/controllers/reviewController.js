@@ -20,10 +20,11 @@ module.exports.addReview = catchAsyncErrors(async (req, res, next) => {
         comment
     })
     if (!rating || !comment) return next(new ErrorHandler("All fields are required", 400))
-    await req.user.reviews.push(newReview)
-    await req.user.properties.push(newReview)
     await newReview.save()
+    await req.user.reviews.push(newReview._id)
+    await property.reviews.push(newReview._id)
     await req.user.save()
+    await property.save()
     res.status(201).json({ message: "Review Added Successfully", newReview })
 })
 
@@ -48,7 +49,6 @@ module.exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
     if (!review) return next(new ErrorHandler("Review Not Found", 404))
     if (review.user.toString() !== req.user._id.toString()) return next(new ErrorHandler("You are not authorize to delete this task", 401))
     await Review.findByIdAndDelete(id)
-    // req.user.save()
     res.status(200).json({
         message: "Review Deleted Successfully"
     })
