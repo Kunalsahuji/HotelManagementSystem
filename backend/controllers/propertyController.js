@@ -74,7 +74,7 @@ module.exports.viewProperty = catchAsyncErrors(async (req, res, next) => {
 })
 
 module.exports.searchMyProperties = catchAsyncErrors(async (req, res, next) => {
-    const properties = await Property.find({ host: req.user._id })
+    const properties = await Property.find({ owner: req.user._id })
     res.status(200).json(properties)
 })
 

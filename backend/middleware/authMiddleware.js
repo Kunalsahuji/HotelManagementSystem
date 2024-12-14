@@ -9,12 +9,11 @@ exports.authMiddleware = catchAsyncErrors(async (req, res, next) => {
         if (!token) {
             return next(new ErrorHandler("Please login to access the resource!", 401))
         }
-        // if (!token) return res.status(401).json({ message: "Unauthorized" });
-
-        // const { id } = jwt.verify(token, process.env.JWT_SECRET_KEY)
-        // req.id = id
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
         const user = await User.findById(decoded.id);
+        if (!user) {
+            return next(new ErrorHandler("Invalid or expired token", 400));
+        }
         req.user = user
         next()
     } catch (error) {
@@ -22,28 +21,3 @@ exports.authMiddleware = catchAsyncErrors(async (req, res, next) => {
         next(error)
     }
 })
-
-
-// const jwt = require('jsonwebtoken');
-// const User = require('../models/userModel');
-// module.exports.protect = async (req, res, next) => {
-//   let token;
-//   if (
-//     req.headers.authorization &&
-//     req.headers.authorization.startsWith('Bearer')
-//   ) {
-//     try {
-//       token = req.headers.authorization.split(' ')[1];
-//       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//       req.user = await User.findById(decoded.id).select('-password');
-//       next();
-//     } catch (error) {
-//       res.status(401).json({ error: 'Not authorized, token failed' });
-//     }
-//   }
-
-//   if (!token) {
-//     res.status(401).json({ error: 'Not authorized, no token' });
-//   }
-// };
-

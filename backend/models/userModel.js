@@ -1,82 +1,69 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: [true, "Username is Required"],
+        required: [true, "Username is required"],
         unique: true,
         trim: true,
-
     },
     email: {
         type: String,
-        required: [true, "Email is Required"],
+        required: [true, "Email is required"],
         unique: true,
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email address'],
         lowercase: true,
-
     },
     password: {
         type: String,
-        required: [true, "Password is Required"],
+        required: [true, "Password is required"],
         minlength: 4,
-        select: false
+        select: false, // Do not return password field by default
     },
-    // role: {
-    //     type:
-    //         String,
-    //     enum: ["guest", "host", "admin"],
-    //     default: "guest"
-    // },
     isAdmin: {
         type: Boolean,
         default: false,
     },
     properties: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Property"
+        ref: "Property",
     }],
     bookings: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Booking"
+        ref: "Booking",
     }],
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Reviews"
+        ref: "Reviews",
     }],
+}, { timestamps: true });
 
-}, { timestamps: true })
-
-
-// Hash Password Before Saving
-userSchema.pre("save", function () {
-    if (!this.isModified("password")) {
-        return;
-    }
+// Hash password before saving
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
     try {
-        let salt = bcrypt.genSaltSync(10)
-        this.password = bcrypt.hashSync(this.password, salt)
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
     } catch (error) {
-        console.log(error)
-        next(error)
+        next(error);
     }
-})
-// Method to Compare Password
-userSchema.methods.comparePassword = function (password) {
-    return bcrypt.compareSync(password, this.password)
-}
+});
 
+// Compare hashed password
+userSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
 
-// Generate Token
+// Generate JWT Token
 userSchema.methods.getJWTToken = function () {
     return jwt.sign(
         { id: this._id },
         process.env.JWT_SECRET_KEY,
         { expiresIn: process.env.JWT_EXPIRE }
-    )
-}
+    );
+};
 
-
-const User = mongoose.model("User", userSchema)
-module.exports = User
+module.exports = mongoose.model("User", userSchema);

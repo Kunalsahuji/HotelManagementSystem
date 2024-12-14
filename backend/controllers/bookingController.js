@@ -41,7 +41,7 @@ module.exports.createBooking = catchAsyncErrors(async (req, res, next) => {
 
 module.exports.viewBookings = catchAsyncErrors(async (req, res, next) => {
     const id = req.user._id
-    const booking = await Booking.find({ user: id, }).populate("Property", "title location price").populate("User", "username email")
+    const booking = await Booking.find({ user: id, }).populate("property", "title location price").populate("user", "username email")
     res.status(200).json(booking)
 })
 
