@@ -1,9 +1,7 @@
-const jwt = require("jsonwebtoken");
 const { catchAsyncErrors } = require("../middleware/catchAsyncErrors");
 const User = require("../models/userModel");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { sendToken } = require("../utils/sendToken");
-const bcrypt = require("bcrypt")
 const nodemailer = require('nodemailer');
 require('dotenv').config()
 // homepage
