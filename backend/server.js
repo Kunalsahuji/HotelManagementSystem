@@ -6,6 +6,7 @@ const userRouter = require('./routes/userRouter')
 const propertyRouter = require('./routes/propertyRouter')
 const reviewRouter = require('./routes/reviewRouter')
 const bookingRouter = require('./routes/bookingRouter')
+const adminRouter = require('./routes/adminRouter')
 // logger
 const logger = require('morgan')
 app.use(logger('tiny'))
@@ -33,6 +34,7 @@ app.use('/api/user', userRouter)
 app.use('/api/property', propertyRouter)
 app.use('/api/review', reviewRouter)
 app.use('/api/booking', bookingRouter)
+app.use('/api/admin', adminRouter)
 
 // error handling
 app.all('*', (req, res, next) => {
