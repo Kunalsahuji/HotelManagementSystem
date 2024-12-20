@@ -14,7 +14,10 @@ module.exports.getUsers = catchAsyncErrors(async (req, res, next) => {
 module.exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findByIdAndUpdate(req.params.id)
     if (!user) return next(new ErrorHandler("User Not Found!", 404))
-    res.status(200).json({ message: "User Deleted Successfully" })
+    await Booking.deleteMany({ user: req.params.id })
+    await Review.deleteMany({ user: req.params.id })
+    await Property.deleteMany({ owner: req.params.id })
+    res.status(200).json({ message: "User And Realted Data Deleted Successfully" })
 })
 
 module.exports.getProperties = catchAsyncErrors(async (req, res, next) => {
@@ -24,9 +27,20 @@ module.exports.getProperties = catchAsyncErrors(async (req, res, next) => {
 })
 
 module.exports.deleteProperty = catchAsyncErrors(async (req, res, next) => {
-    const property = await Property.findByIdAndDelete(req.params.id)
+    const { id } = req.params
+    const property = await Property.findByIdAndDelete(id)
     if (!property) return next(new ErrorHandler("Property Not Found!", 404))
-    res.status(200).json({ message: "Property Deleted Successfull" })
+    await Booking.deleteMany({ property: id })
+    await Review.deleteMany({ property: id })
+    const users = await User.find({ properties: id })
+    for (let user of users) {
+        user.properties = user.properties.filter(propertyId => propertyId.toString() != id)
+        user.bookings = user.bookings.filter(bookingId => bookingId.toString() != id)
+        user.reviews = user.reviews.filter(reviewId => reviewId.toString() != id)
+        await user.save()
+    }
+
+    res.status(200).json({ message: "Property And Related Data Deleted Successfull" })
 })
 
 module.exports.getReviews = catchAsyncErrors(async (req, res, next) => {
@@ -38,6 +52,17 @@ module.exports.getReviews = catchAsyncErrors(async (req, res, next) => {
 module.exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
     const review = await Review.findByIdAndDelete(req.params.id)
     if (!review) return next(new ErrorHandler("Review Not Found!", 404))
+    const user = await User.findById(review.user)
+    if (user) {
+        user.reviews = user.reviews.filter(reviewId => reviewId.toString() != req.params.id)
+    }
+    const property = await Property.findById(review.property)
+    if (property) {
+        property.reviews = property.reviews.filter(reviewId => reviewId.toString() != req.params.id)
+    }
+    await user.save()
+    await property.save()
+
     res.status(200).json({ message: "Review Deleted Successfull" })
 })
 
@@ -50,6 +75,16 @@ module.exports.getBookings = catchAsyncErrors(async (req, res, next) => {
 module.exports.deleteBooking = catchAsyncErrors(async (req, res, next) => {
     const booking = await Booking.findByIdAndDelete(req.params.id)
     if (!booking) return next(new ErrorHandler("Booking Not Found!", 404))
+    const user = await User.findById(booking.user)
+    if (user) {
+        user.bookings = user.bookings.filter(bookingId => bookingId.toString() != req.params.id)
+    }
+    const property = await Property.findById(booking.property)
+    if (property) {
+        property.bookings = property.bookings.filter(bookingId => bookingId.toString() != req.params.id)
+    }
+    await user.save()
+    await property.save()
     res.status(200).json({ message: "Booking Deleted Successfull" })
 })
 

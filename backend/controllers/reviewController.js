@@ -49,6 +49,16 @@ module.exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
     if (!review) return next(new ErrorHandler("Review Not Found", 404))
     if (review.user.toString() !== req.user._id.toString()) return next(new ErrorHandler("You are not authorize to delete this task", 401))
     await Review.findByIdAndDelete(id)
+    const user = await User.findById(review.user)
+    if (user) {
+        user.reviews = user.reviews.filter(reviewId => reviewId.toString() !== id)
+        await user.save()
+    }
+    const property = await Property.findById(review.property)
+    if (property) {
+        property.reviews = property.reviews.filter(reviewId => reviewId.toString() !== id)
+        await property.save()
+    }
     res.status(200).json({
         message: "Review Deleted Successfully"
     })

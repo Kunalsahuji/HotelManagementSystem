@@ -3,14 +3,11 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 const { createProperty, updateProperty, searchMyProperties, searchProperties, deleteProperty, viewProperty } = require('../controllers/propertyController');
 const router = express.Router()
 
-router.get('/', (req, res, next) => {
-    res.json({ message: "Property Routes" })
-})
-router.post('/createProperty', authMiddleware, createProperty)
+router.post('/create', authMiddleware, createProperty)
 router.get('/search', searchProperties)
-router.get('/findProperty', authMiddleware, searchMyProperties)
-router.put('/updateProperty/:id', authMiddleware, updateProperty)
-router.get('/deleteProperty/:id', authMiddleware, deleteProperty)
-router.get('/viewProperty/:id', viewProperty)
+router.get('/find', authMiddleware, searchMyProperties)
+router.put('/update/:id', authMiddleware, updateProperty)
+router.delete('/delete/:id', authMiddleware, deleteProperty)
+router.get('/view/:id', viewProperty)
 
 module.exports = router

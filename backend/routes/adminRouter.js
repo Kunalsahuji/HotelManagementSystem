@@ -15,16 +15,16 @@ const {
 } = require('../controllers/adminController');
 
 router.get('/users', adminMiddleware, getUsers)
-router.delete('/deleteUser/:id', adminMiddleware, deleteUser)
+router.delete('/user-delete/:id', adminMiddleware, deleteUser)
 
 router.get('/properties', adminMiddleware, getProperties)
-router.delete('/deleteProperty/:id', adminMiddleware, deleteProperty)
+router.delete('/property-delete/:id', adminMiddleware, deleteProperty)
 
 router.get('/bookings', adminMiddleware, getBookings)
-router.delete('/deleteBooking/:id', adminMiddleware, deleteBooking)
+router.delete('/booking-delete/:id', adminMiddleware, deleteBooking)
 
 router.get('/reviews', adminMiddleware, getReviews)
-router.delete('/deleteReview/:id', adminMiddleware, deleteReview)
+router.delete('/review-delete/:id', adminMiddleware, deleteReview)
 
 router.get('/payments', adminMiddleware, payments)
 router.get('/payments/:id', adminMiddleware, singlePayment)

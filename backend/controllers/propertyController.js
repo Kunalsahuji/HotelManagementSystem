@@ -2,6 +2,8 @@ const { catchAsyncErrors } = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Property = require("../models/propertyModel");
 const Booking = require("../models/bookingModel");
+const Review = require("../models/reviewModel");
+const User = require("../models/userModel");
 
 module.exports.createProperty = catchAsyncErrors(async (req, res, next) => {
     try {
@@ -62,18 +64,29 @@ module.exports.deleteProperty = catchAsyncErrors(async (req, res, next) => {
     const { id } = req.params
     if (!id) return next(new ErrorHandler("Property ID is required!", 400))
     const deleteProperty = await Property.findByIdAndDelete(id)
-    // req.user.properties = await req.user.properties.filter((id) => {
-    //     id !== id
-    // })
-    // let booking = await Booking.findOne({ property: deleteProperty._id })
-    // console.log(booking, "booking")
-    // // req.user.bookings = await req.user.bookings.filter((review) => {
-    // //     review != 
-    // // })
-
-    // // await req.user.properties.save()
     if (!deleteProperty) return next(new ErrorHandler("Property Not Found!", 404))
-    res.status(200).json({ message: "Property Deleted Successfully" })
+    // const user = await User.findById(req.user._id)
+    // if (user) {
+    //     user.properties = user.properties.filter(propertyId => propertyId.toString() != id)
+    //     user.bookings = user.bookings.filter(bookingId => bookingId.toString() != id)
+    //     user.reviews = user.reviews.filter(reviewId => reviewId.toString() != id)
+    //     await user.save()
+    // }
+    await User.updateMany(
+        { properties: id },
+        {
+            $pull: {
+                properties: id,
+                bookings: { property: id },
+                reviews: { property: id }
+            }
+        }
+    );
+    await Booking.deleteMany({ property: id })
+    await Review.deleteMany({ property: id })
+    await req.user.save()
+
+    res.status(200).json({ message: "Property And Realted Data Deleted Successfully" })
 })
 
 module.exports.viewProperty = catchAsyncErrors(async (req, res, next) => {
@@ -86,6 +99,7 @@ module.exports.viewProperty = catchAsyncErrors(async (req, res, next) => {
 
 module.exports.searchMyProperties = catchAsyncErrors(async (req, res, next) => {
     const properties = await Property.find({ owner: req.user._id })
+    if (!properties) return next(new ErrorHandler("Properties Not Found!", 404))
     res.status(200).json(properties)
 })
 

@@ -4,18 +4,12 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const { sendToken } = require("../utils/sendToken");
 const nodemailer = require('nodemailer');
 require('dotenv').config()
-// homepage
-module.exports.homePage = catchAsyncErrors(async (req, res, next) => {
-    res.json({ message: "Secure homepage" })
-})
 
-// current-user
 module.exports.currentUser = catchAsyncErrors(async (req, res, next) => {
     const currentUser = await User.findById(req.id).exec()
     res.json({ currentUser: currentUser })
 })
 
-// user-register
 module.exports.userRegister = catchAsyncErrors(async (req, res, next) => {
     const { username, email, password } = req.body
     const userExists = await User.findOne({ email })
@@ -27,7 +21,6 @@ module.exports.userRegister = catchAsyncErrors(async (req, res, next) => {
     sendToken(user, 201, res)
 })
 
-// user-login
 module.exports.userLogin = catchAsyncErrors(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -45,7 +38,6 @@ module.exports.userLogin = catchAsyncErrors(async (req, res, next) => {
     sendToken(user, 200, res)
 })
 
-// user-logout
 module.exports.userLogout = catchAsyncErrors(async (req, res, next) => {
     res.cookie("token", null, {
         expires: new Date(Date.now()),
@@ -54,7 +46,6 @@ module.exports.userLogout = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({ message: "User Successfully logged out!" })
 })
 
-// user-update
 module.exports.updateUser = catchAsyncErrors(async (req, res, next) => {
     const { username, email, password } = req.body;
     const user = req.user;
@@ -73,8 +64,6 @@ module.exports.updateUser = catchAsyncErrors(async (req, res, next) => {
         user,
     });
 });
-
-//user-reset-password
 
 module.exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
     const { email } = req.body

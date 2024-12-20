@@ -3,9 +3,9 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 const { viewReviews, addReview, updateReview, deleteReview } = require('../controllers/reviewController');
 const router = express.Router()
 
-router.post('/reviewCreate', authMiddleware, addReview)
-router.put('/reviewUpdate/:id', authMiddleware, updateReview)
-router.delete('/reviewDelete/:id', authMiddleware, deleteReview)
-router.get('/viewReview/:propertyId', authMiddleware, viewReviews)
+router.post('/create', authMiddleware, addReview)
+router.put('/update/:id', authMiddleware, updateReview)
+router.delete('/delete/:id', authMiddleware, deleteReview)
+router.get('/view/:propertyId', authMiddleware, viewReviews)
 
 module.exports = router

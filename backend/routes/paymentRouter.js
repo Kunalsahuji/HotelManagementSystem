@@ -4,5 +4,5 @@ const { processPayment, fetchPayment } = require('../controllers/paymentControll
 const { authMiddleware } = require('../middleware/authMiddleware');
 
 router.post('/', authMiddleware, processPayment)
-router.get('/fetchPayment/:id', authMiddleware, fetchPayment)
+router.get('/payment-fetch/:id', authMiddleware, fetchPayment)
 module.exports = router
