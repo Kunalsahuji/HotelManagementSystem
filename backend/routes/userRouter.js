@@ -11,10 +11,10 @@ const {
 const router = express.Router()
 
 router.get('/current-user', authMiddleware, currentUser)
-router.post('/user-register', userRegister)
-router.post('/user-login', userLogin)
-router.put('/user-update', authMiddleware, updateUser)
-router.get('/user-logout', authMiddleware, userLogout)
-router.post('/user-reset-password', authMiddleware, resetPassword)
+router.post('/register', userRegister)
+router.post('/login', userLogin)
+router.put('/update', authMiddleware, updateUser)
+router.get('/logout', authMiddleware, userLogout)
+router.post('/reset-password', authMiddleware, resetPassword)
 
 module.exports = router
