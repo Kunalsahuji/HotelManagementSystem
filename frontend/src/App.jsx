@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Nav from './pages/partials/Nav'
 import AdminPanel from './pages/AdminPanel'
@@ -16,8 +16,17 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
+import { useDispatch, useSelector } from 'react-redux'
+import { asyncCurrentUser } from './store/actions/userAction'
 
 const App = () => {
+  const user = useSelector(store => store.user)
+  console.log(`userAtApp.jsx`, user)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(asyncCurrentUser())
+  }, [dispatch])
   return (
     <>
       <Nav />

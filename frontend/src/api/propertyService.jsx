@@ -30,7 +30,7 @@ export const deletePropertyServie = async (propertyId) => {
 
 export const searchPropertiesService = async (query) => {
     try {
-        const { data } = await axios.get(`/property/search/${query}`)
+        const { data } = await axios.get(`/property/search${query}`)
         return data
     } catch (error) {
         toast.error(error.response.data.message)

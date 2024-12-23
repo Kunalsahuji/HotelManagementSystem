@@ -1,15 +1,22 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { asyncLoginUser } from "../store/actions/userAction";
+import { toast } from "react-toastify";
 
 const Login = ({ display, setDisplay }) => {
     const dispatch = useDispatch()
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = () => { };
+    const onSubmit = (data) => {
+        const userData = dispatch(asyncLoginUser(data))
+        userData && toast.success("Login successful")
+        setDisplay(false)
+    };
 
     if (!display) return null; // If display is false, do not render the component
 

@@ -8,12 +8,15 @@ const reviewRouter = require('./routes/reviewRouter')
 const bookingRouter = require('./routes/bookingRouter')
 const adminRouter = require('./routes/adminRouter')
 const paymentRouter = require('./routes/paymentRouter')
+const cors = require("cors")
 // logger
 const logger = require('morgan')
 app.use(logger('tiny'))
 
 // Database connection
 const dbConnection = require('./config/dbConnection')();
+
+app.use(cors({credentials:true, origin: true}))
 
 // body-parser 
 app.use(express.json())
@@ -44,6 +47,7 @@ app.all('*', (req, res, next) => {
 })
 // Generated Errors 
 const { generatedErrors } = require('./middleware/error');
+const morgan = require('morgan');
 app.use(generatedErrors)
 
 // start the server

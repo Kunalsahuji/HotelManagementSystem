@@ -1,8 +1,16 @@
+import { useEffect, useState } from "react";
 import Cards from "./partials/Cards";
 import Footer from "./partials/Footer";
 import Nav from "./partials/Nav";
+import { useDispatch } from "react-redux";
+import { serachMyPropertiesAction } from "../store/actions/propertyAction";
 
 const Home = () => {
+    const [query, setQuery] = useState("");
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(serachMyPropertiesAction(query))
+    }, [dispatch, query])
     return (
         <div className="bg-zinc-50 pt-24   relative w-full h-full">
 
