@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { data, useNavigate } from "react-router-dom";
+import { createPropertyService } from "../api/propertyService";
+import { toast } from "react-toastify";
 
 const CreateProperty = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
@@ -11,13 +15,49 @@ const CreateProperty = () => {
 
     const onSubmit = async (data) => {
         // Convert images string to array separated by spaces
-        data.images = data.images.split(' ');
-        data.amenities = data.amenities.split(' ');
+        // data.images = data.images.split(' ');
+        // data.amenities = data.amenities.split(' ');
 
-        console.log(data)
+        // console.log(data)
         // dispatch(asyncCreateProperty(data));
-    };
+        const onSubmit = async (data) => {
+            // Convert images string to array separated by spaces
+            const formatedData = {
+                title: "Luxury Apartment in Downtown",
+                description:
+                    "A spacious and modern 3-bedroom apartment located in the heart of the city. Features include a fully equipped kitchen, large balcony, and stunning city views.",
+                location: "Downtown, Cityville",
+                price: 4999,
+                amenities: [
+                    "Gym",
+                    "Swimming Pool",
+                    "24/7 Security",
+                    "High-Speed Internet",
+                    "Parking",
+                ],
+                images: [
+                    "https://a0.muscache.com/im/pictures/d8d629d7-9307-4b24-a8ae-b01d95e36124.jpg?im_w=1200&im_format=avif",
+                    "https://a0.muscache.com/im/pictures/1a284fe1-9332-412d-9635-4fefb3ca124d.jpg?im_w=720&im_format=avif",
+                    "https://a0.muscache.com/im/pictures/d8d629d7-9307-4b24-a8ae-b01d95e36124.jpg?im_w=1200&im_format=avif",
+                    "https://a0.muscache.com/im/pictures/1a284fe1-9332-412d-9635-4fefb3ca124d.jpg?im_w=720&im_format=avif",
+                    "https://a0.muscache.com/im/pictures/d8d629d7-9307-4b24-a8ae-b01d95e36124.jpg?im_w=1200&im_format=avif",
+                    "https://a0.muscache.com/im/pictures/1a284fe1-9332-412d-9635-4fefb3ca124d.jpg?im_w=720&im_format=avif",
+                ],
+            };
 
+            try {
+                const res = await createPropertyService(formatedData);
+                if (Object.keys(res).length > 0) {
+                    toast.success(res.message);
+                    navigate("/");
+                }
+            } catch (error) {
+                toast.error("Error creating property");
+            }
+            console.log(`resOfCreatePropService ${res}`);
+        };
+
+    };
 
     return (
 

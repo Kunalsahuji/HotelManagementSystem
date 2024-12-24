@@ -49,6 +49,7 @@ export const searchMyPorpertiesServicec = async () => {
 export const viewPropertiesService = async (id) => {
     try {
         const { data } = await axios.get(`/property/view/${id}`)
+        console.log(`dataOfViewProp`, data)
         return data
     } catch (error) {
         toast.error(error.response.data.message)

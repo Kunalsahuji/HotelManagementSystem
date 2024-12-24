@@ -18,6 +18,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { asyncCurrentUser } from './store/actions/userAction'
+import IsAdmin from './components/auth/IsAdmin'
 
 const App = () => {
   const user = useSelector(store => store.user)
@@ -31,7 +32,10 @@ const App = () => {
     <>
       <Nav />
       <Routes>
-        <Route path='/admin-pannel' element={<AdminPanel />} >
+        <Route path='/admin-pannel' element={<IsAdmin><AdminPanel /></IsAdmin>}>
+
+          {/*child route */}
+          
           <Route path='users' element={<AllUser />}></Route>
           <Route path='properties' element={<Allproperties />}></Route>
           <Route path='bookings' element={<AllBookings />}></Route>
@@ -57,7 +61,7 @@ const App = () => {
           }
         >
         </Route>
-      </Routes>
+      </Routes >
 
     </>
   )
