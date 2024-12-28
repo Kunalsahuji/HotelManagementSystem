@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const BookingCard = ({ nightRate }) => {
-  const [guests, setGuests] = useState(1); 
-  const [checkinDate, setCheckinDate] = useState(new Date().toISOString().split('T')[0]); 
-  const [checkoutDate, setCheckoutDate] = useState(new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0]); 
-  const [nights, setNights] = useState(5); 
+const BookingCard = ({ property }) => {
+  const [guests, setGuests] = useState(1);
+  const [checkinDate, setCheckinDate] = useState(new Date().toISOString().split('T')[0]);
+  const [checkoutDate, setCheckoutDate] = useState(new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0]);
+  const [nights, setNights] = useState(5);
+
+  const nightRate = property.price;
+  const totalBeforeTaxes = nightRate * nights * guests;
 
   useEffect(() => {
     const checkin = new Date(checkinDate);
@@ -18,7 +21,6 @@ const BookingCard = ({ nightRate }) => {
     }
   }, [checkinDate, checkoutDate]);
 
-  const totalBeforeTaxes = nightRate * nights * guests; 
   return (
     <div className="border p-6 max-w-sm mx-auto shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">₹{nightRate.toLocaleString()} <span className="text-sm">night</span></h2>
@@ -40,7 +42,7 @@ const BookingCard = ({ nightRate }) => {
         </div>
       </div>
 
-      <Link to={`/booking/1?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guests=${guests}&nights=${nights}&price=${nightRate}`}>
+      <Link to={`/booking/${property._id}?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guests=${guests}&nights=${nights}&price=${nightRate}`}>
         <button className="bg-[#b17f44] text-white font-bold py-2 px-4 w-full rounded-lg mb-4">
           Reserve
         </button>

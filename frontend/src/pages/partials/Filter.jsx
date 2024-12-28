@@ -1,6 +1,23 @@
 import React from 'react'
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { serachMyPropertiesAction } from '../../store/actions/propertyAction';
 
 const Filter = ({ display, setDisplay }) => {
+    const dispatch = useDispatch()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm()
+    const properties = useSelector(store => store.property.properties)
+    const location = properties.map(property => property.location)
+
+    const onSubmit = (data) => {
+        const query = `?location=${data.location}&minPrice=${data.minPrice}&maxPrice=${data.maxPrice}`
+        dispatch(serachMyPropertiesAction(query))
+        setDisplay(false)
+    }
 
     if (!display) return null; // If display is false, do not render the component
 
@@ -20,19 +37,31 @@ const Filter = ({ display, setDisplay }) => {
 
                     <div className="flex flex-col gap-4">
                         <h1 className="text-lg font-bold">Location</h1>
-                        <select className="border p-2 rounded-md w-full">
+                        {/* <select className="border p-2 rounded-md w-full">
                             <option disabled>Select Location</option>
                             <option value="New York">New York</option>
                             <option value="Los Angeles">Los Angeles</option>
                             <option value="Chicago">Chicago</option>
                             <option value="Houston">Houston</option>
                             <option value="Phoenix">Phoenix</option>
+                        </select> */}
+                        <select
+                            className="border p-2 rounded-md w-full"
+                            {...register("location", { required: "Location is required" })}                        >
+                            <option disabled>Select Location</option>
+                            {location.map((loc, i) => (
+                                <option
+                                    key={i}
+                                    value={loc}>
+                                    {loc}
+                                </option>
+                            ))}
+
                         </select>
                     </div>
                     <div className="flex flex-col gap-4 my-7">
                         <h1 className="text-lg font-bold">
-                            Price Range{" "}
-                            <span className="text-sm text-zinc-500">( INR )</span>
+                            Price Range <span className="text-sm text-zinc-500">( INR )</span>
                         </h1>
                         <div className="flex gap-4">
                             <input
@@ -41,6 +70,7 @@ const Filter = ({ display, setDisplay }) => {
                                 className="border p-2 rounded-md w-full"
                                 max="99999"
                                 min="0"
+                                {...register("minPrice", { required: "Min price is required" })}
                             />
                             <input
                                 type="number"
@@ -48,9 +78,10 @@ const Filter = ({ display, setDisplay }) => {
                                 className="border p-2 rounded-md w-full"
                                 max="99999"
                                 min="0"
+                                {...register("maxPrice", { required: "Max price is required" })}
                             />
                         </div>
-                        <button className="w-full text-center bg-[#b17f44] mt-4 text-white rounded-md py-3" type="submit">Continue</button>
+                        <button onClick={handleSubmit(onSubmit)} className="w-full text-center bg-[#b17f44] mt-4 text-white rounded-md py-3" type="submit">Continue</button>
                     </div>
                 </div>
             </div>

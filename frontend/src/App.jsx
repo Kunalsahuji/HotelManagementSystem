@@ -19,6 +19,7 @@ import Dashboard from './pages/Dashboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { asyncCurrentUser } from './store/actions/userAction'
 import IsAdmin from './components/auth/IsAdmin'
+import NotFound from './pages/partials/NotFound'
 
 const App = () => {
   const user = useSelector(store => store.user)
@@ -32,25 +33,59 @@ const App = () => {
     <>
       <Nav />
       <Routes>
-        <Route path='/admin-pannel' element={<IsAdmin><AdminPanel /></IsAdmin>}>
+        <Route path='/admin-pannel'
+          element={
+            <ProtectedRoute>
+              <IsAdmin><AdminPanel /></IsAdmin>
+            </ProtectedRoute>}
+        >
 
           {/*child route */}
-          
-          <Route path='users' element={<AllUser />}></Route>
-          <Route path='properties' element={<Allproperties />}></Route>
-          <Route path='bookings' element={<AllBookings />}></Route>
-          <Route path='payments' element={<AllPayment />}></Route>
+
+          <Route path='users' element={<AllUser />} />
+          <Route path='properties' element={<Allproperties />} />
+          <Route path='bookings' element={<AllBookings />} />
+          <Route path='payments' element={<AllPayment />} />
         </Route>
+        {/* <Route path='/' element={<Layout />}/> */}
+        <Route path='/' element={<Home />} />
+        <Route path='/property/create' element={
+          <ProtectedRoute>
+            <CreateProperty />
+          </ProtectedRoute>}
+        />
+        <Route
+          path='/property/edit/:id'
+          element={
+            <ProtectedRoute>
+              <EditProperty />
+            </ProtectedRoute>}
+        />
+        <Route
+          path='/property/:id'
+          element={
+            <ProtectedRoute>
+              <SingleProperty />
+            </ProtectedRoute>}
+        />
+        <Route
+          path='/booking/:id'
+          element={
+            <ProtectedRoute>
+              <BookingPage />
+            </ProtectedRoute>}
+        />
+        <Route
+          path='/profile/'
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>}
+        />
 
-        <Route path='/' element={<Home />}></Route>
-        <Route path='/property/create' element={<CreateProperty />}></Route>
-        <Route path='/property/edit/:id' element={<EditProperty />}></Route>
-        <Route path='/property/:id' element={<SingleProperty />}></Route>
-        <Route path='/booking/:id' element={<BookingPage />}></Route>
-        <Route path='/profile/' element={<ProfilePage />}></Route>
-
-        <Route path='/login' element={<Login />}></Route>
-        <Route path='/signup' element={<Signup />}></Route>
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='*' element={<NotFound />} />
 
         <Route
           path='/dashboard'

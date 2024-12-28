@@ -1,7 +1,11 @@
 import React from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 
 const AdminPanel = () => {
+    const isAdmin = useSelector(store => store.user?.user?.isAdmin)
+    console.log(`isAdmin ${isAdmin}`);
+    const navigate = useNavigate()
     return (
         <div className="relative flex bg-zinc-50 px-20 pt-28 pb-10 min-h-screen">
             {/* Sidebar */}
@@ -14,8 +18,12 @@ const AdminPanel = () => {
                             alt="User"
                         />
                         <div className="ml-4">
-                            <p className="font-medium text-gray-700">Kunal Sahu</p>
-                            <p className="text-gray-500 text-sm">Kunal@gmail.com</p>
+                            <p className="font-medium text-gray-700">
+                                {isAdmin.username ? isAdmin.username : 'Kunal Sahu'}
+                            </p>
+                            <p className="text-gray-500 text-sm">
+                                {isAdmin.email ? isAdmin.email : 'Kunal@gmail.com'}
+                            </p>
                         </div>
                     </div>
                 </div>

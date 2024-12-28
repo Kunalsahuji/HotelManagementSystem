@@ -10,9 +10,9 @@ export const createPropertyService = async (propertyData) => {
     }
 }
 
-export const updatePropertyService = async (propertyData, id) => {
+export const updatePropertyService = async (propertyData) => {
     try {
-        const { data } = await axios.put(`/property/update/${id}`, propertyData)
+        const { data } = await axios.put(`/property/update/${propertyData._id}`, propertyData)
         return data
     } catch (error) {
         toast.error(error.response.data.message)

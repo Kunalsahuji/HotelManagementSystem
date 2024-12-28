@@ -30,8 +30,8 @@ const Cards = () => {
                         </div>
                         <div className="p-4">
                             <h2 className="font-semibold text-lg">{property.location}</h2>
-                            <p className="text-gray-500 text-sm">{property.distance}</p>
-                            <p className="text-gray-500 text-sm">{property.dates}</p>
+                            {/* <p className="text-gray-500 text-sm">{property.distance}</p> */}
+                            {/* <p className="text-gray-500 text-sm">{property.dates}</p> */}
                             <p className="text-black font-bold mt-2">{property.price}</p>
                             {property.rating && (
                                 <p className="text-yellow-500 text-sm mt-1">

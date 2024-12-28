@@ -9,8 +9,7 @@ import {
 export const serachMyPropertiesAction = (query) => async (dispatch) => {
     try {
         const data = await searchPropertiesService(query)
-        console.log(data);
-        
+        console.log(`searchPropertiesService ${data}`);
         dispatch(fetchPropertiesStart())
         dispatch(fetchPropertiesSuccess(data))
     } catch (error) {

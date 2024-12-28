@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Cards from "./partials/Cards";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { deletePropertyServie, viewPropertiesService } from "../api/propertyService";
-import { viewUserBookingsService } from "../api/bookingService";
+import { cancelBookingService, viewUserBookingsService } from "../api/bookingService";
 import { calculateDuration } from "../utils/Math";
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
-    const { user } = useSelector(store => store.user)
-    console.log(`user ${user}`)
+    const user = useSelector(store => store.user)
+    console.log(`userAtProfile ${user}`)
     const isAdmin = useSelector(store => store.user?.user?.isAdmin)
-
+    console.log(`isAdminAtProfile ${isAdmin}`)
     const [propertiesData, setPropertiesData] = useState([]);
     const [bookingsData, setBookingsData] = useState([]);
 
@@ -18,13 +18,12 @@ const ProfilePage = () => {
         const res = await viewPropertiesService()
         setPropertiesData(res)
     }
-
     const loadBookings = async () => {
         const res = await viewUserBookingsService()
         setBookingsData(res)
     }
-    console.log(`propertiesData ${propertiesData}`);
-    console.log(`bookingsData ${bookingsData}`);
+    console.log(`propertiesDataAtProfile ${propertiesData}`);
+    console.log(`bookingsDataAtProfile ${bookingsData}`);
 
     useEffect(() => {
         if (user) {
@@ -32,153 +31,9 @@ const ProfilePage = () => {
             loadBookings()
         }
     }, [user])
-    // const properties = [
-    //     {
-    //         id: 1,
-    //         image: [
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-654001690497595692/original/94605df9-10d9-4082-ad2d-3b11ec519386.jpeg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-654001690497595692/original/94605df9-10d9-4082-ad2d-3b11ec519386.jpeg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-654001690497595692/original/94605df9-10d9-4082-ad2d-3b11ec519386.jpeg?im_w=720",
-    //         ], // Array of additional image links
-    //         location: "Badowala, India",
-    //         distance: "773 kilometres away",
-    //         dates: "26 Nov – 1 Dec",
-    //         price: "₹15,404 night",
-    //     },
-    //     {
-    //         id: 12,
-    //         image: [
-    //             "https://a0.muscache.com/im/pictures/eab913c1-5f28-4d45-841b-0797378216e4.jpg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/eab913c1-5f28-4d45-841b-0797378216e4.jpg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/eab913c1-5f28-4d45-841b-0797378216e4.jpg?im_w=720",
-    //         ], // Array of additional image links
-    //         location: "New Delhi, India",
-    //         distance: "580 kilometres away",
-    //         dates: "24–29 Nov",
-    //         price: "₹7,303 night",
-    //         rating: 4.87,
-    //     },
-    //     {
-    //         id: 13,
-    //         image: [
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-654001690497595692/original/94605df9-10d9-4082-ad2d-3b11ec519386.jpeg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-654001690497595692/original/94605df9-10d9-4082-ad2d-3b11ec519386.jpeg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-654001690497595692/original/94605df9-10d9-4082-ad2d-3b11ec519386.jpeg?im_w=720",
-    //         ], // Array of additional image links
-    //         location: "Badowala, India",
-    //         distance: "773 kilometres away",
-    //         dates: "26 Nov – 1 Dec",
-    //         price: "₹15,404 night",
-    //     },
-    //     {
-    //         id: 14,
-    //         image: [
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-675108014847583143/original/a40ae4d9-6f8d-45d4-9994-5a004d31bcea.jpeg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-675108014847583143/original/a40ae4d9-6f8d-45d4-9994-5a004d31bcea.jpeg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/miso/Hosting-675108014847583143/original/a40ae4d9-6f8d-45d4-9994-5a004d31bcea.jpeg?im_w=720",
-    //         ], // Array of additional image links
-    //         location: "Anjar, India",
-    //         distance: "755 kilometres away",
-    //         dates: "17–22 Nov",
-    //         price: "₹20,520 night",
-    //     },
-    //     {
-    //         id: 15,
-    //         image: [
-    //             "https://a0.muscache.com/im/pictures/7f78dcb6-2e2c-4fa4-8efc-df2ce5053bfc.jpg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/7f78dcb6-2e2c-4fa4-8efc-df2ce5053bfc.jpg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/7f78dcb6-2e2c-4fa4-8efc-df2ce5053bfc.jpg?im_w=720",
-    //         ], // Array of additional image links
-    //         location: "Gurugram, India",
-    //         distance: "566 kilometres away",
-    //         dates: "24–29 Nov",
-    //         price: "₹4,597 night",
-    //         rating: 4.83,
-    //     },
-    //     {
-    //         id: 16,
-    //         image: [
-    //             "https://a0.muscache.com/im/pictures/eab913c1-5f28-4d45-841b-0797378216e4.jpg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/eab913c1-5f28-4d45-841b-0797378216e4.jpg?im_w=720",
-    //             "https://a0.muscache.com/im/pictures/eab913c1-5f28-4d45-841b-0797378216e4.jpg?im_w=720",
-    //         ], // Array of additional image links
-    //         location: "New Delhi, India",
-    //         distance: "580 kilometres away",
-    //         dates: "24–29 Nov",
-    //         price: "₹7,303 night",
-    //         rating: 4.87,
-    //     },
-    // ];
-
-    // const bookings = [
-    //     {
-    //         id: 1,
-    //         property: "Property1",
-    //         user: "User1",
-    //         checkInDate: "2022-11-26",
-    //         checkOutDate: "2022-12-01",
-    //         totalPrice: 15404,
-    //         status: "Confirmed",
-    //         razorpayOrderId: "order_123",
-    //         paymentDetails: {
-    //             paymentId: "payment_123",
-    //             orderId: "order_123",
-    //             signature: "signature_123",
-    //         },
-    //     },
-    //     {
-    //         id: 2,
-    //         property: "Property2",
-    //         user: "User2",
-    //         checkInDate: "2022-11-17",
-    //         checkOutDate: "2022-11-22",
-    //         totalPrice: 20520,
-    //         status: "Pending",
-    //         razorpayOrderId: "order_456",
-    //         paymentDetails: {
-    //             paymentId: "payment_456",
-    //             orderId: "order_456",
-    //             signature: "signature_456",
-    //         },
-    //     },
-    //     {
-    //         id: 3,
-    //         property: "Property3",
-    //         user: "User3",
-    //         checkInDate: "2022-11-24",
-    //         checkOutDate: "2022-11-29",
-    //         totalPrice: 4597,
-    //         status: "Cancelled",
-    //         razorpayOrderId: "order_789",
-    //         paymentDetails: {
-    //             paymentId: "payment_789",
-    //             orderId: "order_789",
-    //             signature: "signature_789",
-    //         },
-    //     },
-    //     {
-    //         id: 4,
-    //         property: "Property4",
-    //         user: "User4",
-    //         checkInDate: "2022-11-24",
-    //         checkOutDate: "2022-11-29",
-    //         totalPrice: 7303,
-    //         status: "Confirmed",
-    //         razorpayOrderId: "order_101",
-    //         paymentDetails: {
-    //             paymentId: "payment_101",
-    //             orderId: "order_101",
-    //             signature: "signature_101",
-    //         },
-    //     },
-    // ];
 
     const deleteHandler = async (id) => {
         const res = await deletePropertyServie(id)
-        // if (Object.keys(res).length > 0) {
-        //     toast.success(res.message);
-        //     loadProperties()
-        // }
         res?.message && toast.success(res.message)
         loadProperties()
 
@@ -192,14 +47,14 @@ const ProfilePage = () => {
         console.log(`Cancelled ${id} Booking`);
     };
 
-    return (
+    return user ? (
         <div className="h-full w-full pt-28 px-20 bg-zinc-50">
             <div className="flex h-full relative w-full gap-8">
                 <div className="w-[30vw] p-6 py-10 sticky top-[16vh] bg-white rounded-3xl h-fit shadow-[0px_0px_30px_2px_#e4e4e7] flex justify-between items-center">
                     {/* Profile Circle */}
                     <div>
                         <div className="flex items-center justify-center w-24 h-24 bg-black text-white text-5xl font-bold rounded-full mx-auto">
-                            {user?.username.charAt(0).toUpperCase()}
+                        {user?.username[0].toUpperCase()}
                         </div>
                         {/* Name and Role */}
                         <div className="text-center mt-4">
@@ -355,6 +210,12 @@ const ProfilePage = () => {
                 </div>
             </div>
         </div>
-    );
+    ) :
+        (
+            <div className="flex justify-center items-center w-full h-full">
+                <h1 className="text-2xl font-bold">Please login to view this page</h1>
+            </div>
+        )
+        ;
 }
 export default ProfilePage;

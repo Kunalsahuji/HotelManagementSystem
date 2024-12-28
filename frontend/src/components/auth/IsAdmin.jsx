@@ -9,9 +9,9 @@ const IsAdmin = ({ children }) => {
     useEffect(() => {
         if (!isAdmin) {
             toast.error('You are not authorized to access this page')
+            return navigate('/')
         }
-        return navigate('/')
-    })
+    }, [isAdmin, navigate])
     return isAdmin && children
 }
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Cards from "./partials/Cards";
 import Footer from "./partials/Footer";
-import Nav from "./partials/Nav";
 import { useDispatch } from "react-redux";
 import { serachMyPropertiesAction } from "../store/actions/propertyAction";
 

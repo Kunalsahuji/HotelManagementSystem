@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { viewPropertiesService } from "../api/propertyService";
 import { viewReviewsService } from "../api/reviewService";
 import { calculateAvgRating } from "../utils/Math";
+import { useForm } from "react-hook-form";
 
 const SingleProperty = () => {
     const { id } = useParams()
@@ -13,7 +14,14 @@ const SingleProperty = () => {
     const [reviewsData, setReviewsData] = useState([])
     const [avgRating, setAvgRating] = useState(0)
 
-    const getProperty = async () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
+
+    const getProperty = async (id) => {
         try {
             const res = await viewPropertiesService(id)
             setPropertyData(res)
@@ -35,7 +43,7 @@ const SingleProperty = () => {
         getProperty(id)
         getReviews(id)
     }, [id])
-    
+
 
     const ratings = [
         { label: "Cleanliness", value: "5.0", icon: "ri-sparkling-line" },
@@ -191,7 +199,7 @@ const SingleProperty = () => {
                         <div className="flex justify-between items-center w-full ">
                             <div className="my-6">
                                 <h1 className="text-3xl text-black ">{propertyData.location}</h1>
-                                <h1 className="text-lg">{propertyData.distance}</h1>
+                                {/* <h1 className="text-lg">{propertyData.distance}</h1> */}
                             </div>
                             <div className="my-6 h-full w-[20%] flex items-center justify-between ">
                                 <div>
@@ -237,7 +245,7 @@ const SingleProperty = () => {
                     </div>
 
                     <div className="w-fit mb-4">
-                        <BookingCard nightRate={nightRate} />
+                        <BookingCard property={propertyData} />
                     </div>
                 </div>
 
@@ -281,7 +289,7 @@ const SingleProperty = () => {
 
                     {/* Reviews */}
                     <div className="border-t pt-6 grid grid-cols-2 gap-4">
-                        {reviewsData && reviewsData.length> 0 && reviewsData.slice(0, 6).map((review, index) => (
+                        {reviewsData && reviewsData.length > 0 && reviewsData.slice(0, 6).map((review, index) => (
                             <div key={index} className="mb-6">
                                 <div className="flex items-center mb-2">
                                     <img

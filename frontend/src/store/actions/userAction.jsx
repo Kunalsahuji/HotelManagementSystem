@@ -3,7 +3,8 @@ import { login, logout } from '../reducers/userSlice'
 import {
     currentUserService,
     loginService,
-    logoutService
+    logoutService,
+    registerService
 } from '../../api/userServices'
 
 export const asyncCurrentUser = () => async (dispatch) => {
@@ -13,6 +14,15 @@ export const asyncCurrentUser = () => async (dispatch) => {
         !user && dispatch(logout())
     } catch (error) {
         toast.error(error.response?.data?.message)
+    }
+}
+export const asyncRegisterUser = (userData) => async (dispatch) => {
+    try {
+        const data = await registerService(userData)
+        dispatch(asyncCurrentUser())
+        return data
+    } catch (error) {
+
     }
 }
 

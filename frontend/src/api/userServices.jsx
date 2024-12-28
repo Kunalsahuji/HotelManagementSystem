@@ -22,6 +22,7 @@ export const loginService = async (userData) => {
 export const registerService = async (userData) => {
     try {
         const { data } = await axios.post('user/register', userData)
+        return data
     } catch (error) {
         toast.error(error.response.data.message)
     }

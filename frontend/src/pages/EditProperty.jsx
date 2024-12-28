@@ -14,7 +14,7 @@ const EditProperty = () => {
         data.images = data.images.split(" ");
         data.amenities = data.amenities.split(" ");
 
-        console.log(data);
+        console.log(`dataAtEditProp`, data);
         dispatch(data);
     };
 

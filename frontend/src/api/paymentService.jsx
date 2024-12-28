@@ -47,6 +47,7 @@ const handleRazorpayScreen = async (amount) => {
             return
         }
         return new Promise((resolve, reject) => {
+            console.log(import.meta.env.VITE_RAZORPAY_KEY_ID)
             const options = {
                 key: import.meta.env.VITE_RAZORPAY_KEY_ID,
                 amount: amount.toString(),
@@ -54,7 +55,7 @@ const handleRazorpayScreen = async (amount) => {
                 name: 'Aura Elegence',
                 description: 'Payment',
                 image: 'https://example.com/your_logo',
-                order_id: res.data.order.id,
+                // order_id: res.data.order.id,
                 handler: function (response) {
                     paymentFetchService(response.razorpay_payment_id)
                         .then((status) => {
@@ -70,7 +71,6 @@ const handleRazorpayScreen = async (amount) => {
                 notes: {
                     address: 'Aura Elegence',
                 },
-
                 theme: {
                     color: '#b17f44'
                 },

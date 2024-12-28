@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { asyncLoginUser } from "../store/actions/userAction";
+import { asyncRegisterUser } from "../store/actions/userAction";
+import { toast } from "react-toastify";
 
 const Signup = ({ display, setDisplay }) => {
     const dispatch = useDispatch()
@@ -12,7 +13,8 @@ const Signup = ({ display, setDisplay }) => {
 
 
     const onSubmit = (data) => {
-        dispatch(asyncLoginUser(data))
+        dispatch(asyncRegisterUser(data))
+        data && toast.success("Register successful")
         setDisplay(false)
     };
 
