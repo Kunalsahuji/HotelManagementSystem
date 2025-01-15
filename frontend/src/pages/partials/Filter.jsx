@@ -10,7 +10,8 @@ const Filter = ({ display, setDisplay }) => {
         handleSubmit,
         formState: { errors },
     } = useForm()
-    const properties = useSelector(store => store.property.properties)
+    const properties = useSelector(store => store.property.properties.properties)
+    console.log(properties)
     const location = properties.map(property => property.location)
 
     const onSubmit = (data) => {
@@ -37,14 +38,6 @@ const Filter = ({ display, setDisplay }) => {
 
                     <div className="flex flex-col gap-4">
                         <h1 className="text-lg font-bold">Location</h1>
-                        {/* <select className="border p-2 rounded-md w-full">
-                            <option disabled>Select Location</option>
-                            <option value="New York">New York</option>
-                            <option value="Los Angeles">Los Angeles</option>
-                            <option value="Chicago">Chicago</option>
-                            <option value="Houston">Houston</option>
-                            <option value="Phoenix">Phoenix</option>
-                        </select> */}
                         <select
                             className="border p-2 rounded-md w-full"
                             {...register("location", { required: "Location is required" })}                        >

@@ -38,15 +38,15 @@ const CreateProperty = () => {
         };
 
         try {
-            const res = await createPropertyService(formatedData);
+            const res = await createPropertyService(data);
             if (Object.keys(res).length > 0) {
                 toast.success(res.message);
                 navigate("/");
             }
+            console.log(`resOfCreatePropService ${res}`);
         } catch (error) {
             toast.error("Error creating property");
         }
-        console.log(`resOfCreatePropService ${res}`);
     };
 
     return (

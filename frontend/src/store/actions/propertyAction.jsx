@@ -13,7 +13,7 @@ export const serachMyPropertiesAction = (query) => async (dispatch) => {
         dispatch(fetchPropertiesStart())
         dispatch(fetchPropertiesSuccess(data))
     } catch (error) {
-        toast.error(error.response.data.message)
+        toast.error(error.response?.data?.message)
         fetchPropertiesFailure(error.response.data.message)
     }
 }

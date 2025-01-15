@@ -10,7 +10,8 @@ import {
 export const asyncCurrentUser = () => async (dispatch) => {
     try {
         const user = await currentUserService()
-        dispatch(login(user))
+        console.log(user.currentUser)
+        dispatch(login(user.currentUser))
         !user && dispatch(logout())
     } catch (error) {
         toast.error(error.response?.data?.message)
@@ -20,7 +21,7 @@ export const asyncRegisterUser = (userData) => async (dispatch) => {
     try {
         const data = await registerService(userData)
         dispatch(asyncCurrentUser())
-        return data
+        // return data
     } catch (error) {
 
     }
@@ -32,7 +33,7 @@ export const asyncLoginUser = (userData) => async (dispatch) => {
         dispatch(asyncCurrentUser())
         return data
     } catch (error) {
-        toast.error(error.response.data.message)
+        toast.error(error.response?.data?.message)
     }
 }
 
@@ -41,6 +42,6 @@ export const asyncLogoutUser = () => async (dispatch) => {
         const res = await logoutService()
         dispatch(logout())
     } catch (error) {
-        toast.error(error.response.data.message)
+        toast.error(error.response?.data?.message)
     }
 }

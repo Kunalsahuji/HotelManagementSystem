@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config()
 
 module.exports.currentUser = catchAsyncErrors(async (req, res, next) => {
-    const currentUser = await User.findById(req.id).exec()
+    const currentUser = await User.findById(req.user).exec()
     res.json({ currentUser: currentUser })
 })
 

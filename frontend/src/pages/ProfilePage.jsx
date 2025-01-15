@@ -7,8 +7,6 @@ import { calculateDuration } from "../utils/Math";
 import { toast } from "react-toastify";
 
 const ProfilePage = () => {
-    const user = useSelector(store => store.user)
-    console.log(`userAtProfile ${user}`)
     const isAdmin = useSelector(store => store.user?.user?.isAdmin)
     console.log(`isAdminAtProfile ${isAdmin}`)
     const [propertiesData, setPropertiesData] = useState([]);
@@ -47,14 +45,14 @@ const ProfilePage = () => {
         console.log(`Cancelled ${id} Booking`);
     };
 
-    return user ? (
+    return user && (
         <div className="h-full w-full pt-28 px-20 bg-zinc-50">
             <div className="flex h-full relative w-full gap-8">
                 <div className="w-[30vw] p-6 py-10 sticky top-[16vh] bg-white rounded-3xl h-fit shadow-[0px_0px_30px_2px_#e4e4e7] flex justify-between items-center">
                     {/* Profile Circle */}
                     <div>
                         <div className="flex items-center justify-center w-24 h-24 bg-black text-white text-5xl font-bold rounded-full mx-auto">
-                        {user?.username[0].toUpperCase()}
+                            {user?.username[0].toUpperCase()}
                         </div>
                         {/* Name and Role */}
                         <div className="text-center mt-4">
@@ -210,12 +208,13 @@ const ProfilePage = () => {
                 </div>
             </div>
         </div>
-    ) :
-        (
-            <div className="flex justify-center items-center w-full h-full">
-                <h1 className="text-2xl font-bold">Please login to view this page</h1>
-            </div>
-        )
-        ;
+    )
+    // :
+    //     (
+    //         <div className="flex justify-center items-center w-full h-full">
+    //             <h1 className="text-2xl font-bold">Please login to view this page</h1>
+    //         </div>
+    //     )
+    //     ;
 }
 export default ProfilePage;

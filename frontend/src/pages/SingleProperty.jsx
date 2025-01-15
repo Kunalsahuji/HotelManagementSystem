@@ -7,12 +7,16 @@ import { viewPropertiesService } from "../api/propertyService";
 import { viewReviewsService } from "../api/reviewService";
 import { calculateAvgRating } from "../utils/Math";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from 'react-redux'
+
 
 const SingleProperty = () => {
     const { id } = useParams()
     const [propertyData, setPropertyData] = useState([])
-    const [reviewsData, setReviewsData] = useState([])
-    const [avgRating, setAvgRating] = useState(0)
+    const prop = useSelector(state => state.user?.user?.properties)
+    console.log(prop)
+    // const [reviewsData, setReviewsData] = useState([])
+    // const [avgRating, setAvgRating] = useState(0)
 
     const {
         register,
@@ -24,6 +28,7 @@ const SingleProperty = () => {
     const getProperty = async (id) => {
         try {
             const res = await viewPropertiesService(id)
+            console.log(`PropertyRes:${res}`)
             setPropertyData(res)
         } catch (error) {
             toast.error(error.response.data.message)
@@ -141,9 +146,10 @@ const SingleProperty = () => {
                 "The house is very original, Jan Henrik is a passionate architect, the level of research and detail of this house is impressive, nothing was left to chance in this house.",
         },
     ];
-
+    console.log(`propertyData ${propertyData}`);
     return (
         <>
+            propertyData && (
             <div className="h-full w-full bg-zinc-50 pt-28 px-40">
                 <div className="flex w-full gap-2 h-[60vh] rounded-2xl overflow-hidden">
                     <div className="w-1/2 h-full  relative">
@@ -199,7 +205,7 @@ const SingleProperty = () => {
                         <div className="flex justify-between items-center w-full ">
                             <div className="my-6">
                                 <h1 className="text-3xl text-black ">{propertyData.location}</h1>
-                                {/* <h1 className="text-lg">{propertyData.distance}</h1> */}
+                                <h1 className="text-lg">{propertyData.distance}</h1>
                             </div>
                             <div className="my-6 h-full w-[20%] flex items-center justify-between ">
                                 <div>
@@ -324,6 +330,9 @@ const SingleProperty = () => {
                 </div>
 
             </div>
+            )
+
+
 
             <Footer />
         </>

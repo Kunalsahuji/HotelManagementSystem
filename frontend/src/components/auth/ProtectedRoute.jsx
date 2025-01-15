@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 
 const ProtectedRoute = ({ children }) => {
   const isLoggedIn = useSelector(store => store.user.isLoggedIn)
+  console.log(isLoggedIn)
   const navigate = useNavigate()
 
   useEffect(() => {

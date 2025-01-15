@@ -8,6 +8,6 @@ router.get('/search', searchProperties)
 router.get('/find', authMiddleware, searchMyProperties)
 router.put('/update/:id', authMiddleware, updateProperty)
 router.delete('/delete/:id', authMiddleware, deleteProperty)
-router.get('/view/:id', viewProperty)
+router.get('/view/:id',authMiddleware, viewProperty)
 
 module.exports = router
